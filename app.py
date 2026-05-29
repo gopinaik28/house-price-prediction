@@ -28,25 +28,22 @@ def predict(
     area: int,
     bedrooms: int,
     bathrooms: int,
-    parking: int,
-    age: int
+    parking: int
 ):
 
-    data = pd.DataFrame({
-        "area": [area],
-        "bedrooms": [bedrooms],
-        "bathrooms": [bathrooms],
-        "parking": [parking],
-        "age": [age]
-    })
-
-    prediction = model.predict(data)
+    prediction = model.predict(
+        [[
+            area,
+            bedrooms,
+            bathrooms,
+            parking
+        ]]
+    )
 
     return {
         "area": area,
         "bedrooms": bedrooms,
         "bathrooms": bathrooms,
         "parking": parking,
-        "age": age,
         "predicted_price": round(float(prediction[0]), 2)
     }

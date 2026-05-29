@@ -2,22 +2,33 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 import joblib
 
-data = pd.DataFrame({
-    "area": [1000,1200,1500,1800,2000,2200,2500,3000],
-    "bedrooms": [2,2,3,3,3,4,4,5],
-    "bathrooms": [1,2,2,2,3,3,4,4],
-    "parking": [1,1,1,2,2,2,3,3],
-    "age": [15,12,10,8,6,5,4,2],
-    "price": [50,60,75,90,100,115,130,160]
-})
+# Load dataset
+df = pd.read_csv("data/Housing.csv")
 
-X = data[["area","bedrooms","bathrooms","parking","age"]]
-y = data["price"]
+# Features
+X = df[[
+    "area",
+    "bedrooms",
+    "bathrooms",
+    "parking"
+]]
 
+# Target
+y = df["price"]
+
+# Train model
 model = LinearRegression()
-
 model.fit(X, y)
 
+# Save model
 joblib.dump(model, "model.pkl")
 
-print("Model Trained Successfully!")
+print("✅ Model Trained Successfully!")
+print("Features Used:")
+print(X.columns.tolist())
+
+print("\nCoefficients:")
+print(model.coef_)
+
+print("\nIntercept:")
+print(model.intercept_)
