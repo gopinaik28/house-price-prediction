@@ -5,7 +5,6 @@ import pandas as pd
 
 app = FastAPI()
 
-# Enable CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,7 +13,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load trained model
 model = joblib.load("model.pkl")
 
 
@@ -26,15 +24,29 @@ def home():
 
 
 @app.get("/predict")
-def predict(area: int):
+def predict(
+    area: int,
+    bedrooms: int,
+    bathrooms: int,
+    parking: int,
+    age: int
+):
 
     data = pd.DataFrame({
-        "area": [area]
+        "area": [area],
+        "bedrooms": [bedrooms],
+        "bathrooms": [bathrooms],
+        "parking": [parking],
+        "age": [age]
     })
 
     prediction = model.predict(data)
 
     return {
         "area": area,
-        "predicted_price": float(prediction[0])
+        "bedrooms": bedrooms,
+        "bathrooms": bathrooms,
+        "parking": parking,
+        "age": age,
+        "predicted_price": round(float(prediction[0]), 2)
     }
